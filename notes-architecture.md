@@ -87,3 +87,20 @@
 - La classe `.center` dans le CSS n'a pas un bon contraste entre le background et le texte (ratio 4.35:1).
 - Aucun `aria-label` sur les liens `<a>` et les graphiques `<canvas>`.
   - Utiliser des `aria-label` pour améliorer l'accessibilité.
+
+## Priorisation des tâches
+
+- Supprimer les consoles.log.
+  - Important pour la sécurité car les données et les erreurs sont facilement accessibles.
+- Gérer le loading et les erreurs en appelant le not found.
+  - C'est un défaut majeur lors de la visite sur le site.
+- Améliorer l'accessibilités.
+  - Important pour les visiteurs malvoyants 
+  - améliorer le contraste et ajouter des aria-label.
+- Performances et fuites de mémoire.
+  - Important pour les utilisateurs avec des appareils moins puissants.
+- Corriger le typage `any` dans les composants.
+  - Important pour la maintenabilité du code et éviter des bugs potentiels.
+- Faire le refactoring des composants pour extraire la logique et le template.
+  - Important pour la maintenabilité du code.
+
