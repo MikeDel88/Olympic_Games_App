@@ -43,6 +43,7 @@
 - Le fichier `ARCHITECTURE.md` est manquant.
 - Le nommage des informations pour les KPIs qui n'est pas toujours approprié (exemple : `number of entries` pour le nombre de participation qui pourrait reprendre `Number of JOs`).
 - Le LineChart de CountryComponent n'affiche que les médailles et pas le nombre d'athlètes par JO.
+- Le Pie Chart ne correspond pas visuellement à la maquette.
 
 ## Composant NotFoundComponent
 
