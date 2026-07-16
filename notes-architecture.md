@@ -154,6 +154,10 @@ src/
     │   │   │   ├── header.component.ts
     │   │   │   ├── header.component.html
     │   │   │   └── header.component.scss
+    │   │   ├── header-infos/
+    │   │   │   ├── header-infos.component.ts
+    │   │   │   ├── header-infos.component.html
+    │   │   │   └── header-infos.component.scss
     │   │   ├── loader/
     │   │   │   ├── loader.component.ts
     │   │   │   ├── loader.component.html
@@ -162,10 +166,14 @@ src/
     │   │   │   ├── error.component.ts
     │   │   │   ├── error.component.html
     │   │   │   └── error.component.scss
-    │   │   └── charts/
-    │   │       ├── pie-chart.component.ts
-    │   │       ├── pie-chart.component.html
-    │   │       └── pie-chart.component.scss
+    │   │   ├── country-chart/
+    │   │   │   ├── country-chart.component.ts
+    │   │   │   ├── country-chart.component.html
+    │   │   │   └── country-chart.component.scss
+    │   │   └── medals-chart/
+    │   │       ├── medals-chart.component.ts
+    │   │       ├── medals-chart.component.html
+    │   │       └── medals-chart.component.scss
     │   └── styles/
     │       ├── colors.style.scss
     │       └── breakpoints.style.scss
