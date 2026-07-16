@@ -110,3 +110,168 @@
 - Faire le refactoring des composants pour extraire la logique et le template.
   - Important pour la maintenabilité du code.
 
+# Architecture du projet — Olympic (Angular 18)
+
+## Vue d'ensemble
+
+Le projet suit une **architecture en couches** (layered architecture) organisée selon le pattern Angular **Core / Shared / Feature**. Chaque répertoire correspond à une responsabilité précise, et les dépendances circulent toujours dans un seul sens : de la couche présentation vers la couche données, puis vers le domaine — jamais l'inverse.
+
+| Couche | Répertoires | Rôle |
+|---|---|---|
+| Présentation | `pages/`, `shared/components/` | Affichage et interaction utilisateur |
+| Données / Accès | `core/` | Services, appels API, cache |
+| Domaine | `models/` | Types et interfaces métier |
+
+## Arborescence
+
+```
+src/
+└── app/
+    ├── pages/
+    │   ├── country/
+    │   │   ├── country.component.ts
+    │   │   ├── country.component.html
+    │   │   └── country.component.scss
+    │   ├── home/
+    │   │   ├── home.component.ts
+    │   │   ├── home.component.html
+    │   │   └── home.component.scss
+    │   └── not-found/
+    │       ├── not-found.component.ts
+    │       ├── not-found.component.html
+    │       └── not-found.component.scss
+    ├── core/
+    │   ├── services/
+    │   │   └── data.service.ts
+    │   ├── apis/
+    │   │   └── olympic-api.api.ts
+    │   └── caches/
+    │       └── proxy-data.cache.ts
+    ├── shared/
+    │   ├── components/
+    │   │   ├── header/
+    │   │   │   ├── header.component.ts
+    │   │   │   ├── header.component.html
+    │   │   │   └── header.component.scss
+    │   │   ├── loader/
+    │   │   │   ├── loader.component.ts
+    │   │   │   ├── loader.component.html
+    │   │   │   └── loader.component.scss
+    │   │   ├── error/
+    │   │   │   ├── error.component.ts
+    │   │   │   ├── error.component.html
+    │   │   │   └── error.component.scss
+    │   │   └── charts/
+    │   │       ├── pie-chart.component.ts
+    │   │       ├── pie-chart.component.html
+    │   │       └── pie-chart.component.scss
+    │   └── styles/
+    │       ├── colors.style.scss
+    │       └── breakpoints.style.scss
+    └── models/
+        ├── participant.model.ts
+        └── olympic.model.ts
+```
+
+## Description des répertoires
+
+### `pages/` — Composants de page (features)
+
+Contient les **composants intelligents** (smart / container components), un sous-dossier par page routée de l'application :
+
+- **`country/`** : page de détail d'un pays (statistiques olympiques d'un pays donné).
+- **`home/`** : page d'accueil, vue d'ensemble des données olympiques.
+- **`not-found/`** : page 404 affichée pour toute route inconnue.
+
+Ces composants sont les seuls à orchestrer la logique de la page : ils injectent `DataService`, récupèrent les données, gèrent les états de chargement et d'erreur, et délèguent l'affichage aux composants de `shared/components/` via leurs inputs.
+
+### `core/` — Cœur applicatif (singletons)
+
+Contient les services transverses instanciés une seule fois pour toute l'application (`providedIn: 'root'`). Ce répertoire implémente la couche d'accès aux données en trois niveaux :
+
+- **`apis/olympic-api.api.ts`** : l'accès brut à la source de données (requêtes HTTP). C'est le seul fichier qui connaît les URLs et le format des réponses réseau.
+- **`caches/proxy-data.cache.ts`** : un **Proxy** placé devant l'API. Il intercepte les demandes de données et sert les résultats déjà connus sans refaire d'appel réseau ; sinon il délègue à l'API et mémorise la réponse.
+- **`services/data.service.ts`** : la **Façade** exposée au reste de l'application. C'est le point d'entrée unique des composants pour obtenir des données ; il s'appuie sur le proxy de cache et expose des données typées avec les modèles du domaine.
+
+Ce trio API → Cache (Proxy) → Service (Façade/Repository) garantit qu'aucun composant ne dépend directement du transport HTTP ni de la stratégie de cache.
+
+### `shared/` — Éléments réutilisables
+
+Contient tout ce qui est **partagé et sans logique métier** :
+
+- **`components/`** : composants de présentation (dumb components), purement pilotés par leurs `input()` / `output()`. Ils n'injectent aucun service :
+  - `header/` : en-tête de l'application.
+  - `loader/` : indicateur de chargement.
+  - `error/` : affichage d'un message d'erreur.
+  - `charts/pie-chart/` : graphique en camembert, alimenté uniquement par ses inputs.
+- **`styles/`** : styles partagés, importables par tous les composants :
+  - `colors.style.scss` : palette de couleurs (variables SCSS).
+  - `breakpoints.style.scss` : points de rupture responsive et mixins associés.
+
+#### Stratégie responsive
+
+Le responsive (mobile / tablette / ordinateur) est géré en **mobile-first** dans le fichier `.scss` de chaque composant — il n'y a pas de fichier de style séparé par type d'écran. Les breakpoints sont définis une seule fois dans `breakpoints.style.scss` et consommés via des mixins :
+
+```scss
+// shared/styles/breakpoints.style.scss
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet) { @content; }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) { @content; }
+}
+```
+
+```scss
+// Exemple d'utilisation dans un composant
+@use 'shared/styles/breakpoints.style' as bp;
+
+.dashboard {
+  flex-direction: column;      // mobile : base
+
+  @include bp.tablet {
+    flex-direction: row;       // tablette et plus
+  }
+}
+```
+
+Cas particuliers :
+
+- Si la **structure** d'une page change selon l'écran (composants différents affichés), utiliser `BreakpointObserver` de `@angular/cdk/layout` côté TypeScript plutôt que de masquer des blocs en CSS.
+- Pour les composants réutilisables de `shared/components/` (ex. `pie-chart`), privilégier les **container queries** (`@container`) : le composant s'adapte à son conteneur et reste autonome.
+
+### `models/` — Domaine
+
+Définit les **types métier** de l'application, sans aucune dépendance :
+
+- **`olympic.model.ts`** : modèle représentant les données olympiques d'un pays.
+- **`participant.model.ts`** : modèle représentant une participation (édition, médailles, athlètes...).
+
+Ces modèles sont utilisés par toutes les couches pour typer les données de bout en bout.
+
+## Règles de dépendance
+
+Ces règles font de la structure une véritable architecture en couches. Elles doivent être respectées dans le code :
+
+1. **`pages/` ne parle qu'à `data.service.ts`.** Jamais d'injection directe de `olympic-api.api.ts` ni de `proxy-data.cache.ts` dans un composant.
+2. **`shared/components/` ne dépend que de `models/`.** Aucun service injecté : les données arrivent par les inputs, les événements repartent par les outputs.
+3. **`core/` ne dépend jamais de `pages/` ni de `shared/`.** Le flux de dépendances descend : présentation → données → domaine.
+4. **`models/` ne dépend de rien.** Types purs, importables partout.
+
+```
+pages ──────────► core/services ──► core/caches ──► core/apis
+  │                     │
+  ▼                     ▼
+shared/components ──► models ◄──────────────────────────┘
+```
+
+## Conventions
+
+- **Dossiers et fichiers en kebab-case** (`pie-chart.component.ts`, `olympic-api.api.ts`) ; classes en PascalCase (`PieChartComponent`, `OlympicApiService`).
+- **Suffixes explicites** indiquant le rôle du fichier : `.component`, `.service`, `.api`, `.cache`, `.model`, `.style`.
+- **Composants standalone** (Angular 18) : pas de NgModule, imports déclarés directement dans le décorateur du composant.
+- **Extension possible** : `shared/` pourra accueillir `pipes/` et `directives/` ; `core/` pourra accueillir `guards/` et `interceptors/` sans casser la structure.
