@@ -41,6 +41,7 @@
   - `HomeComponent` : 8
 - Le fichier `README.md` n'est pas documenté avec « installation / structure / décisions ».
 - Le fichier `ARCHITECTURE.md` est manquant.
+- Le nommage des informations pour les KPIs qui n'est pas toujours approprié (exemple : `number of entries` pour le nombre de participants ou `number of medals` pour le nombre de médailles).
 
 ## Composant NotFoundComponent
 
