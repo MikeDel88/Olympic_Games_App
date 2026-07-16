@@ -94,8 +94,6 @@
 
 - Supprimer les consoles.log.
   - Important pour la sécurité car les données et les erreurs sont facilement accessibles.
-- Corriger le nommage des informations pour les KPIs.
-  - Important pour la compréhension du site.
 - Afficher le nombre d'athlètes par JO dans le LineChart.
   - Important pour la compréhension du site.
 - Gérer le loading et les erreurs en appelant le not found.
@@ -105,6 +103,8 @@
   - améliorer le contraste et ajouter des aria-label.
 - Performances et fuites de mémoire.
   - Important pour les utilisateurs avec des appareils moins puissants.
+- Mettre en place le responsive design.
+  - Important pour les utilisateurs sur mobile.
 - Corriger le typage `any` dans les composants.
   - Important pour la maintenabilité du code et éviter des bugs potentiels.
 - Faire le refactoring des composants pour extraire la logique et le template.
