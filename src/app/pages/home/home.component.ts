@@ -2,11 +2,16 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import Chart from 'chart.js/auto';
+import {HeaderComponent} from "../../shared/components/header/header.component";
 
 @Component({
   selector: 'app-home',
+  imports: [
+    HeaderComponent
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: true
 })
 export class HomeComponent implements OnInit {
   private olympicUrl = './assets/mock/olympic.json';
@@ -14,14 +19,12 @@ export class HomeComponent implements OnInit {
   public totalCountries: number = 0
   public totalJOs: number = 0
   public error!:string
-  titlePage: string = "Medals per Country";
 
   constructor(private router: Router, private http:HttpClient) { }
 
   ngOnInit() {
     this.http.get<any[]>(this.olympicUrl).pipe().subscribe(
       (data) => {
-        console.log(`Liste des données : ${JSON.stringify(data)}`);
         if (data && data.length > 0) {
           this.totalJOs = Array.from(new Set(data.map((i: any) => i.participations.map((f: any) => f.year)).flat())).length;
           const countries: string[] = data.map((i: any) => i.country);
@@ -32,7 +35,6 @@ export class HomeComponent implements OnInit {
         }
       },
       (error:HttpErrorResponse) => {
-        console.log(`erreur : ${error}`);
         this.error = error.message
       }
     )

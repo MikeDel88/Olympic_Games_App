@@ -1,12 +1,18 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, RouterLink} from '@angular/router';
 import Chart from 'chart.js/auto';
+import {HeaderComponent} from "../../shared/components/header/header.component";
 
 
 @Component({
   selector: 'app-country',
+  imports: [
+    HeaderComponent,
+    RouterLink
+  ],
   templateUrl: './country.component.html',
+  standalone: true,
   styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit {
@@ -18,7 +24,7 @@ export class CountryComponent implements OnInit {
   public totalAthletes: number = 0;
   public error!: string;
 
-  constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) {
+  constructor(private route: ActivatedRoute, private http: HttpClient) {
   }
 
   ngOnInit() {
