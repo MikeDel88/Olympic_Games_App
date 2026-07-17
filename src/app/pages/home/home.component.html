@@ -10,10 +10,7 @@
         ]"
       />
   </div>
-    @if(countries) {
-      <app-medals-chart
-        [countries]="countries"
-        [sumOfAllMedalsYears]="sumOfAllMedalsYears"
-      />
+    @if(medalsChartDatas) {
+      <app-medals-chart [datas]="medalsChartDatas"/>
     }
 </div>

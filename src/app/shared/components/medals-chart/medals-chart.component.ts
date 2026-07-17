@@ -13,23 +13,22 @@ export class MedalsChartComponent implements OnInit  {
 
   medalsChart!: Chart<"pie", number[], string>;
 
-  countries: InputSignal<string[]> = input<string[]>([])
-  sumOfAllMedalsYears: InputSignal<number[]> = input<number[]>([])
+  datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
 
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.buildPieChart(this.countries(), this.sumOfAllMedalsYears());
+    this.buildPieChart(this.datas());
   }
 
-  buildPieChart(countries: string[], sumOfAllMedalsYears: number[]) {
+  buildPieChart(datas: MedalsChartDatas) {
     const pieChart = new Chart("MedalsChart", {
       type: 'pie',
       data: {
-        labels: countries,
+        labels: datas.countries,
         datasets: [{
           label: 'Medals',
-          data: sumOfAllMedalsYears,
+          data: datas.sumOfAllMedalsYears,
           backgroundColor: ['#0b868f', '#adc3de', '#7a3c53', '#8f6263', 'orange', '#94819d'],
           hoverOffset: 4
         }],
@@ -50,4 +49,9 @@ export class MedalsChartComponent implements OnInit  {
     });
     this.medalsChart = pieChart;
   }
+}
+
+export type MedalsChartDatas = {
+  countries: string[]
+  sumOfAllMedalsYears: number[]
 }

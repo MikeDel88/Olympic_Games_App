@@ -8,11 +8,8 @@
   </div>
   <div class="chart-container wrapper-container">
     <div class="container">
-      @if(years && medals) {
-        <app-country-chart
-          [years]="years"
-          [medals]="medals"
-        />
+      @if(countryChartDatas) {
+        <app-country-chart [datas]="countryChartDatas"/>
       }
       <h2>Date</h2>
     </div>

@@ -12,22 +12,21 @@ export class CountryChartComponent implements OnInit {
 
   countryChart!: Chart<"line", string[], number>;
 
-  years: InputSignal<number[]> = input<number[]>([])
-  medals: InputSignal<string[]> = input<string[]>([])
+  datas: InputSignal<CountryChartDatas> = input.required<CountryChartDatas>();
 
   ngOnInit(): void {
-    this.buildChart(this.years(), this.medals());
+    this.buildChart(this.datas());
   }
 
-  buildChart(years: number[], medals: string[]) {
+  buildChart(datas: CountryChartDatas) {
     const lineChart = new Chart("CountryChart", {
       type: 'line',
       data: {
-        labels: years,
+        labels: datas.years,
         datasets: [
           {
             label: "medals",
-            data: medals,
+            data: datas.medals,
             backgroundColor: '#0b868f'
           },
         ]
@@ -38,4 +37,9 @@ export class CountryChartComponent implements OnInit {
     });
     this.countryChart = lineChart;
   }
+}
+
+export type CountryChartDatas = {
+  years: number[]
+  medals: string[]
 }

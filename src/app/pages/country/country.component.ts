@@ -2,7 +2,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap, RouterLink} from '@angular/router';
 import {HeaderComponent} from "../../shared/components/header/header.component";
-import {CountryChartComponent} from "../../shared/components/country-chart/country-chart.component";
+import {CountryChartComponent, CountryChartDatas} from "../../shared/components/country-chart/country-chart.component";
 
 
 @Component({
@@ -23,8 +23,7 @@ export class CountryComponent implements OnInit {
   public totalMedals: number = 0;
   public totalAthletes: number = 0;
   public error!: string;
-  public years!: number[]
-  public medals!: string[]
+  public countryChartDatas!: CountryChartDatas
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
@@ -38,11 +37,15 @@ export class CountryComponent implements OnInit {
           this.titlePage = selectedCountry.country;
           const participations = selectedCountry?.participations.map((i: any) => i);
           this.totalEntries = participations?.length ?? 0;
-          this.years = selectedCountry?.participations.map((i: any) => i.year) ?? [];
-          this.medals = selectedCountry?.participations.map((i: any) => i.medalsCount.toString()) ?? [];
-          this.totalMedals = this.medals.reduce((accumulator: any, item: any) => accumulator + parseInt(item), 0);
+          const years = selectedCountry?.participations.map((i: any) => i.year) ?? [];
+          const medals = selectedCountry?.participations.map((i: any) => i.medalsCount.toString()) ?? [];
+          this.totalMedals = medals.reduce((accumulator: any, item: any) => accumulator + parseInt(item), 0);
           const nbAthletes = selectedCountry?.participations.map((i: any) => i.athleteCount.toString()) ?? []
           this.totalAthletes = nbAthletes.reduce((accumulator: any, item: any) => accumulator + parseInt(item), 0);
+          this.countryChartDatas = {
+            years: years,
+            medals: medals
+          }
         }
       },
       (error: HttpErrorResponse) => {
