@@ -4,7 +4,7 @@
   </div>
   <div class="split">
     @for (info of infos(); track info.label) {
-      <app-header-infos [label]="info.label" [count]="info.count" />
+      <app-header-infos [infos]="info" />
     }
   </div>
 </div>

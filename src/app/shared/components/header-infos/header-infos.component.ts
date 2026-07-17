@@ -8,6 +8,10 @@ import { Component, input } from '@angular/core';
   styleUrl: './header-infos.component.scss'
 })
 export class HeaderInfosComponent {
-    label = input.required<string>();
-    count = input.required<number>();
+    infos = input.required<HeaderInfos>();
+}
+
+export type HeaderInfos = {
+  label: string,
+  count: number
 }

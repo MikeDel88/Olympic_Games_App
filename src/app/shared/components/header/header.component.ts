@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import {HeaderInfosComponent} from "../header-infos/header-infos.component";
+import {HeaderInfos, HeaderInfosComponent} from "../header-infos/header-infos.component";
 
 @Component({
   selector: 'app-header',
@@ -12,5 +12,5 @@ import {HeaderInfosComponent} from "../header-infos/header-infos.component";
 })
 export class HeaderComponent {
     titlePage= input.required<string>()
-    infos = input.required<{ label: string; count: number }[]>()
+    infos = input.required<HeaderInfos[]>()
 }
