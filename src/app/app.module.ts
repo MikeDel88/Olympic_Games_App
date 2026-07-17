@@ -6,10 +6,11 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { CountryComponent } from "./pages/country/country.component";
+import {MedalsChartComponent} from "./shared/components/medals-chart/medals-chart.component";
 
 @NgModule({
   declarations: [AppComponent, NotFoundComponent],
-  imports: [BrowserModule, AppRoutingModule, CountryComponent, HomeComponent],
+  imports: [BrowserModule, AppRoutingModule, CountryComponent, HomeComponent, MedalsChartComponent],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent],
 })

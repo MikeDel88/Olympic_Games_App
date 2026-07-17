@@ -2,10 +2,18 @@
 <hr/>
 <div>
   <div>
-      <app-header titlePage="Medals per Country" [infos]="[
+      <app-header
+        titlePage="Medals per Country"
+        [infos]="[
           { label: 'Number of countries', count: totalCountries },
           { label: 'Number of JOs', count: totalJOs }
-      ]"/>
+        ]"
+      />
   </div>
-  <canvas id="DashboardPieChart">{{ pieChart }}</canvas>
+    @if(countries) {
+      <app-medals-chart
+        [countries]="countries"
+        [sumOfAllMedalsYears]="sumOfAllMedalsYears"
+      />
+    }
 </div>
