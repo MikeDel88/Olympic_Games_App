@@ -1,8 +1,17 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap, RouterLink} from '@angular/router';
+import {Component, OnInit, inject, DestroyRef } from '@angular/core';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {HeaderComponent} from "../../shared/components/header/header.component";
 import {CountryChartComponent, CountryChartDatas} from "../../shared/components/country-chart/country-chart.component";
+import {DataService} from "../../core/services/data.service";
+import {
+  getMedalsOlympic,
+  getTotalAthletes,
+  getTotalEntries, getTotalMedals,
+  getYears,
+} from "../../core/utils/olympic.utils";
+import {AsyncPipe} from "@angular/common";
+import {Olympic} from "../../models/olympic/olympic.model";
 
 
 @Component({
@@ -10,6 +19,7 @@ import {CountryChartComponent, CountryChartDatas} from "../../shared/components/
   imports: [
     HeaderComponent,
     CountryChartComponent,
+    AsyncPipe,
     RouterLink
   ],
   templateUrl: './country.component.html',
@@ -17,40 +27,31 @@ import {CountryChartComponent, CountryChartDatas} from "../../shared/components/
   styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit {
-  private olympicUrl: string = './assets/mock/olympic.json';
-  public titlePage: string = '';
-  public totalEntries: number = 0;
-  public totalMedals: number = 0;
-  public totalAthletes: number = 0;
-  public error!: string;
-  public countryChartDatas!: CountryChartDatas
+  error!: string;
+  countryChartDatas!: CountryChartDatas
+  titlePage!: string
+  totalEntries!: number
+  totalMedals!: number
+  totalAthletes!: number
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  private destroyRef = inject(DestroyRef);
+  private dataService= inject(DataService)
+  private route = inject(ActivatedRoute)
 
-  ngOnInit() {
-    let countryName: string | null = null
-    this.route.paramMap.subscribe((param: ParamMap) => countryName = param.get('countryName'));
-    this.http.get<any[]>(this.olympicUrl).pipe().subscribe(
-      (data) => {
-        if (data && data.length > 0) {
-          const selectedCountry = data.find((i: any) => i.country === countryName);
-          this.titlePage = selectedCountry.country;
-          const participations = selectedCountry?.participations.map((i: any) => i);
-          this.totalEntries = participations?.length ?? 0;
-          const years = selectedCountry?.participations.map((i: any) => i.year) ?? [];
-          const medals = selectedCountry?.participations.map((i: any) => i.medalsCount.toString()) ?? [];
-          this.totalMedals = medals.reduce((accumulator: any, item: any) => accumulator + parseInt(item), 0);
-          const nbAthletes = selectedCountry?.participations.map((i: any) => i.athleteCount.toString()) ?? []
-          this.totalAthletes = nbAthletes.reduce((accumulator: any, item: any) => accumulator + parseInt(item), 0);
-          this.countryChartDatas = {
-            years: years,
-            medals: medals
-          }
-        }
-      },
-      (error: HttpErrorResponse) => {
-        this.error = error.message
-      }
-    );
+  ngOnInit(): void {
+    this.dataService.getOlympic(this.route.snapshot.params["countryName"])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(data => { if (data) this.updateUi(data) });
+  }
+
+  private updateUi(data: Olympic): void {
+    this.titlePage = data.country
+    this.totalAthletes = getTotalAthletes(data)
+    this.totalEntries = getTotalEntries(data)
+    this.totalMedals = getTotalMedals(data)
+    this.countryChartDatas = {
+      years: getYears(data),
+      medals: getMedalsOlympic(data)
+    }
   }
 }

@@ -1,7 +1,10 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject, DestroyRef } from '@angular/core';
 import {HeaderComponent} from "../../shared/components/header/header.component";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {MedalsChartComponent, MedalsChartDatas} from "../../shared/components/medals-chart/medals-chart.component";
+import {DataService} from "../../core/services/data.service";
+import {Olympics} from "../../models/olympic/olympic.model";
+import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/olympic.utils";
 
 @Component({
   selector: 'app-home',
@@ -14,33 +17,29 @@ import {MedalsChartComponent, MedalsChartDatas} from "../../shared/components/me
   standalone: true
 })
 export class HomeComponent implements OnInit {
-  private olympicUrl: string = './assets/mock/olympic.json';
-  public totalCountries: number = 0
-  public totalJOs: number = 0
-  public error!:string
-  public medalsChartDatas!: MedalsChartDatas
+  totalCountries!: number;
+  totalJOs!: number;
+  error!:string;
+  medalsChartDatas!: MedalsChartDatas;
 
-  constructor(private http:HttpClient) { }
+  private destroyRef = inject(DestroyRef);
+  private dataService= inject(DataService)
 
   ngOnInit() {
-    this.http.get<any[]>(this.olympicUrl).pipe().subscribe(
-      (data) => {
-        if (data && data.length > 0) {
-          this.totalJOs = Array.from(new Set(data.map((i: any) => i.participations.map((f: any) => f.year)).flat())).length;
-          const countries = data.map((i: any) => i.country);
-          this.totalCountries = countries.length;
-          const medals = data.map((i: any) => i.participations.map((i: any) => (i.medalsCount)));
-          const sumOfAllMedalsYears = medals.map((i) => i.reduce((acc: any, i: any) => acc + i, 0));
-          this.medalsChartDatas = {
-            countries: countries,
-            sumOfAllMedalsYears: sumOfAllMedalsYears
-          };
-        }
-      },
-      (error:HttpErrorResponse) => {
-        this.error = error.message
-      }
-    )
+    this.dataService.getOlympics()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(data => { if (data && data.length > 0) this.updateUi(data) })
+  }
+
+  private updateUi(data: Olympics) {
+    this.totalJOs = getTotalJOs(data)
+    const countries = getCountries(data);
+    this.totalCountries = countries.length;
+    this.medalsChartDatas = {
+      countries: countries,
+      sumOfAllMedalsYears: sumOfAllMedalsYears(data)
+    };
   }
 }
+
 
