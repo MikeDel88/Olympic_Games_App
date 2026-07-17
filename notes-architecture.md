@@ -146,8 +146,10 @@ src/
     │   │   └── data.service.ts
     │   ├── apis/
     │   │   └── olympic-api.api.ts
-    │   └── caches/
-    │       └── proxy-data.cache.ts
+    │   ├─── caches/
+    │   │   └── proxy-data.cache.ts
+    │   └── utils/
+    │       └── olympic.utils.ts
     ├── shared/
     │   ├── components/
     │   │   ├── header/
@@ -180,6 +182,7 @@ src/
     └── models/
         ├── participant.model.ts
         └── olympic.model.ts
+
 ```
 
 ## Description des répertoires
