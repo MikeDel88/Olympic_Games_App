@@ -8,7 +8,12 @@
   </div>
   <div class="chart-container wrapper-container">
     <div class="container">
-      <canvas id="countryChart">{{ lineChart }}</canvas>
+      @if(years && medals) {
+        <app-country-chart
+          [years]="years"
+          [medals]="medals"
+        />
+      }
       <h2>Date</h2>
     </div>
   </div>
