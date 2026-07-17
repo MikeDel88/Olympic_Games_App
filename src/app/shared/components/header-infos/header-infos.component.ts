@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 
 @Component({
   selector: 'app-header-infos',
@@ -8,7 +8,7 @@ import { Component, input } from '@angular/core';
   styleUrl: './header-infos.component.scss'
 })
 export class HeaderInfosComponent {
-    infos = input.required<HeaderInfos>();
+    infos: InputSignal<HeaderInfos> = input.required<HeaderInfos>();
 }
 
 export type HeaderInfos = {

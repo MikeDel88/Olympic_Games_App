@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 import {HeaderInfos, HeaderInfosComponent} from "../header-infos/header-infos.component";
 
 @Component({
@@ -11,6 +11,6 @@ import {HeaderInfos, HeaderInfosComponent} from "../header-infos/header-infos.co
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-    titlePage= input.required<string>()
-    infos = input.required<HeaderInfos[]>()
+    titlePage: InputSignal<string> = input.required<string>()
+    infos: InputSignal<HeaderInfos[]> = input.required<HeaderInfos[]>()
 }

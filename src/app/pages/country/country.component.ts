@@ -17,9 +17,9 @@ import {CountryChartComponent} from "../../shared/components/country-chart/count
   styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit {
-  private olympicUrl = './assets/mock/olympic.json';
+  private olympicUrl: string = './assets/mock/olympic.json';
   public titlePage: string = '';
-  public totalEntries: any = 0;
+  public totalEntries: number = 0;
   public totalMedals: number = 0;
   public totalAthletes: number = 0;
   public error!: string;

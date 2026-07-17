@@ -14,7 +14,7 @@ import {MedalsChartComponent} from "../../shared/components/medals-chart/medals-
   standalone: true
 })
 export class HomeComponent implements OnInit {
-  private olympicUrl = './assets/mock/olympic.json';
+  private olympicUrl: string = './assets/mock/olympic.json';
   public totalCountries: number = 0
   public totalJOs: number = 0
   public error!:string
