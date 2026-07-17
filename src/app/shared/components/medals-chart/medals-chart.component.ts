@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class MedalsChartComponent implements OnInit  {
 
-  public medalsChart!: Chart<"pie", number[], string>;
+  medalsChart!: Chart<"pie", number[], string>;
 
   countries: InputSignal<string[]> = input<string[]>([])
   sumOfAllMedalsYears: InputSignal<number[]> = input<number[]>([])
