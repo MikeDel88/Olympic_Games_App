@@ -1,5 +1,6 @@
 import { Component, input, OnInit, InputSignal } from '@angular/core';
 import Chart from 'chart.js/auto';
+import {ChartColors} from "../../styles/colors-chart.style";
 
 @Component({
   selector: 'app-country-chart',
@@ -27,7 +28,7 @@ export class CountryChartComponent implements OnInit {
           {
             label: "medals",
             data: datas.medals,
-            backgroundColor: '#0b868f'
+            backgroundColor: ChartColors.teal
           },
         ]
       },

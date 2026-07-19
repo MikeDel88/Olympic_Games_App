@@ -2,6 +2,7 @@ import {Component, computed, inject, input, InputSignal, OnInit, Signal, signal,
 import Chart from 'chart.js/auto';
 import {Router} from '@angular/router';
 import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
+import {ChartColors} from "../../styles/colors-chart.style";
 
 @Component({
   selector: 'app-medals-chart',
@@ -96,7 +97,7 @@ export class MedalsChartComponent implements OnInit, AccessibilityChart  {
         datasets: [{
           label: 'Medals',
           data: datas.sumOfAllMedalsYears,
-          backgroundColor: ['#0b868f', '#adc3de', '#7a3c53', '#8f6263', 'orange', '#94819d'],
+          backgroundColor: Object.values(ChartColors),
           hoverOffset: 4
         }],
       },
@@ -106,6 +107,7 @@ export class MedalsChartComponent implements OnInit, AccessibilityChart  {
     });
   }
 }
+
 
 export interface CountryData {
   id: number
