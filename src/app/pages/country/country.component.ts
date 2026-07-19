@@ -1,5 +1,5 @@
 import {Component, OnInit, inject, DestroyRef } from '@angular/core';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {HeaderComponent} from "../../shared/components/header/header.component";
 import {CountryChartComponent, CountryChartDatas} from "../../shared/components/country-chart/country-chart.component";
@@ -25,8 +25,10 @@ import {Olympic} from "../../models/olympic/olympic.model";
   styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit {
-  error!: string;
+
   countryChartDatas!: CountryChartDatas
+  countryId!: number
+
   titlePage!: string
   totalEntries!: number
   totalMedals!: number
@@ -35,11 +37,29 @@ export class CountryComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private dataService= inject(DataService)
   private route = inject(ActivatedRoute)
+  private router = inject(Router)
 
   ngOnInit(): void {
-    this.dataService.getOlympic(parseInt(this.route.snapshot.params["id"]))
+    this.checkParams()
+    this.getDatas()
+  }
+
+  private checkParams() {
+    this.countryId = parseInt(this.route.snapshot.params["id"])
+
+    if(isNaN(this.countryId))
+      this.router.navigateByUrl("/not-found")
+  }
+
+  private getDatas() {
+    this.dataService.getOlympic(this.countryId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => { if (data) this.updateUi(data) });
+      .subscribe(data => {
+        if (data)
+          this.updateUi(data)
+        else
+          this.router.navigateByUrl("/not-found")
+      });
   }
 
   private updateUi(data: Olympic): void {
