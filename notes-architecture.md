@@ -90,7 +90,7 @@
 - La classe `.center` dans le CSS n'a pas un bon contraste entre le background et le texte (ratio 4.35:1).
 - Aucun `aria-label` sur les liens `<a>` et les graphiques `<canvas>`.
   - Utiliser des `aria-label` pour améliorer l'accessibilité.
-- Pouvoir donner le focus du des élements clickable.
+- Pouvoir donner le focus des élements clickable.
 
 ## Priorisation des tâches
 
@@ -102,7 +102,8 @@
   - C'est un défaut majeur lors de la visite sur le site.
 - Améliorer l'accessibilités.
   - Important pour les visiteurs malvoyants 
-  - améliorer le contraste et ajouter des aria-label.
+  - Améliorer le contraste et ajouter des aria-label.
+  - Gérer la navigation par clavier.
 - Performances et fuites de mémoire.
   - Important pour les utilisateurs avec des appareils moins puissants.
 - Mettre en place le responsive design.
