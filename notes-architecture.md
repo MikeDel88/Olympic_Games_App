@@ -90,6 +90,7 @@
 - La classe `.center` dans le CSS n'a pas un bon contraste entre le background et le texte (ratio 4.35:1).
 - Aucun `aria-label` sur les liens `<a>` et les graphiques `<canvas>`.
   - Utiliser des `aria-label` pour améliorer l'accessibilité.
+- Pouvoir donner le focus du des élements clickable.
 
 ## Priorisation des tâches
 
