@@ -1,7 +1,8 @@
 <h2>Olympic games app</h2>
 <hr/>
 <div class="grid">
-  <div class="col-full">
+  @if(medalsChartDatas) {
+    <div class="col-full">
       <app-header
         titlePage="Medals per Country"
         [infos]="[
@@ -9,8 +10,9 @@
           { label: 'Number of JOs', count: totalJOs }
         ]"
       />
-  </div>
-    @if(medalsChartDatas) {
-      <app-medals-chart class="col-full col-desktop-8-center" [datas]="medalsChartDatas"/>
-    }
+    </div>
+    <app-medals-chart class="col-full col-desktop-8-center" [datas]="medalsChartDatas"/>
+  } @else {
+    <app-loader message="Chargement des pays"/>
+  }
 </div>

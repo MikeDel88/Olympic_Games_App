@@ -1,5 +1,6 @@
 <div class="grid">
-  <div class="col-full">
+  @if(countryChartDatas) {
+    <div class="col-full">
       <app-header
         [titlePage]="titlePage"
         [infos]="[
@@ -8,16 +9,20 @@
           { label: 'Total Number of athletes', count: totalAthletes }
         ]"
       />
-  </div>
-  <div class="chart-container col-full col-desktop-8-center">
-    <div class="container">
-      @if(countryChartDatas) {
-        <app-country-chart [datas]="countryChartDatas"/>
-      }
-      <h2 class="legend">Date</h2>
     </div>
-  </div>
-  <div class="center col-full">
-    <a routerLink="/">Go back</a>
-  </div>
+    <div class="chart-container col-full col-desktop-8-center">
+      <div class="container">
+        @if(countryChartDatas) {
+          <app-country-chart [datas]="countryChartDatas"/>
+        }
+        <h2 class="legend">Date</h2>
+      </div>
+    </div>
+    <div class="center col-full">
+      <a routerLink="/">Go back</a>
+    </div>
+  } @else {
+    <app-loader message="Chargement des informations du pays"/>
+  }
+
 </div>

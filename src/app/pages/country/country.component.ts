@@ -11,6 +11,8 @@ import {
   getYears,
 } from "../../core/utils/olympic.utils";
 import {Olympic} from "../../models/olympic/olympic.model";
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {delay} from "rxjs";
 
 
 @Component({
@@ -18,7 +20,8 @@ import {Olympic} from "../../models/olympic/olympic.model";
   imports: [
     HeaderComponent,
     CountryChartComponent,
-    RouterLink
+    RouterLink,
+    LoaderComponent
   ],
   templateUrl: './country.component.html',
   standalone: true,
@@ -53,6 +56,7 @@ export class CountryComponent implements OnInit {
 
   private getDatas() {
     this.dataService.getOlympic(this.countryId)
+      .pipe(delay(5000))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => {
         if (data)

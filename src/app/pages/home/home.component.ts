@@ -6,12 +6,15 @@ import {DataService} from "../../core/services/data.service";
 import {Olympics} from "../../models/olympic/olympic.model";
 import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/olympic.utils";
 import {Router} from "@angular/router";
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {delay} from "rxjs";
 
 @Component({
   selector: 'app-home',
   imports: [
     HeaderComponent,
-    MedalsChartComponent
+    MedalsChartComponent,
+    LoaderComponent
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -29,6 +32,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getOlympics()
+      .pipe(delay(5000))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => {
         if (data && data.length > 0)
