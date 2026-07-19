@@ -16,11 +16,11 @@ export class OlympicApi {
     return this.http.get<Olympics>(this.olympicUrl)
   }
 
-  get(country: string): Observable<Olympic | undefined> {
+  get(countryId: number): Observable<Olympic | undefined> {
     return this.http.get<Olympics>(this.olympicUrl)
       .pipe(
         map(olympics => {
-          return olympics.find(olympic => olympic.country === country)
+          return olympics.find(olympic => olympic.id === countryId)
         })
       )
   }

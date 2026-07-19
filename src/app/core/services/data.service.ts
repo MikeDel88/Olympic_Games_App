@@ -15,8 +15,8 @@ export class DataService {
     return this.olympicApi.getAll()
   }
 
-  getOlympic(country: string): Observable<Olympic | undefined> {
-    return this.olympicApi.get(country)
+  getOlympic(countryId: number): Observable<Olympic | undefined> {
+    return this.olympicApi.get(countryId)
   }
 
 }

@@ -10,7 +10,6 @@ import {
   getTotalEntries, getTotalMedals,
   getYears,
 } from "../../core/utils/olympic.utils";
-import {AsyncPipe} from "@angular/common";
 import {Olympic} from "../../models/olympic/olympic.model";
 
 
@@ -19,7 +18,6 @@ import {Olympic} from "../../models/olympic/olympic.model";
   imports: [
     HeaderComponent,
     CountryChartComponent,
-    AsyncPipe,
     RouterLink
   ],
   templateUrl: './country.component.html',
@@ -39,7 +37,7 @@ export class CountryComponent implements OnInit {
   private route = inject(ActivatedRoute)
 
   ngOnInit(): void {
-    this.dataService.getOlympic(this.route.snapshot.params["countryName"])
+    this.dataService.getOlympic(parseInt(this.route.snapshot.params["id"]))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => { if (data) this.updateUi(data) });
   }
