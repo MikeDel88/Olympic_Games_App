@@ -1,6 +1,7 @@
-import { Component, input, InputSignal, OnInit  } from '@angular/core';
+import {Component, computed, inject, input, InputSignal, OnInit, Signal, signal, WritableSignal} from '@angular/core';
 import Chart from 'chart.js/auto';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
+import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
 
 @Component({
   selector: 'app-medals-chart',
@@ -9,23 +10,89 @@ import { Router } from '@angular/router';
   templateUrl: './medals-chart.component.html',
   styleUrl: './medals-chart.component.scss'
 })
-export class MedalsChartComponent implements OnInit  {
+export class MedalsChartComponent implements OnInit, AccessibilityChart  {
 
   medalsChart!: Chart<"pie", number[], string>;
 
-  datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
+  readonly datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
 
-  constructor(private router: Router) {}
+  readonly activeIndex: WritableSignal<number | null> = signal(null);
+
+  readonly ariaLabel: Signal<string> = computed(() => {
+    const index = this.activeIndex();
+    if (index === null) {
+      return 'Graphique du nombre de médailles par pays. Utilisez les flèches pour parcourir les pays.';
+    }
+    const country = this.datas().countries[index];
+    const medals = this.datas().sumOfAllMedalsYears[index];
+    return `${country.name} : ${medals} médailles. Appuyez sur Entrée pour voir le détail.`;
+  });
+
+  private readonly router = inject(Router);
 
   ngOnInit(): void {
     this.buildPieChart(this.datas());
   }
 
+  onKeydown(event: KeyboardEvent): void {
+    const countries = this.datas().countries;
+    const current = this.activeIndex();
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault();
+        this.setActiveSlice(current === null ? 0 : (current + 1) % countries.length);
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault();
+        this.setActiveSlice(current === null ? countries.length - 1 : (current - 1 + countries.length) % countries.length);
+        break;
+      case 'Enter':
+      case ' ':
+        if (current !== null) {
+          event.preventDefault();
+          this.navigateToCountry(countries[current].id)
+        }
+        break;
+      case 'Escape':
+        this.onClearActiveSlice();
+        break;
+    }
+  }
+
+  setActiveSlice(index: number): void {
+    this.activeIndex.set(index);
+    const arc = this.medalsChart.getDatasetMeta(0).data[index];
+    this.medalsChart.setActiveElements([{datasetIndex: 0, index}]);
+    this.medalsChart.tooltip?.setActiveElements([{datasetIndex: 0, index}], {x: arc.x, y: arc.y});
+    this.medalsChart.update();
+  }
+
+  onClearActiveSlice(): void {
+    this.activeIndex.set(null);
+    this.medalsChart.setActiveElements([]);
+    this.medalsChart.tooltip?.setActiveElements([], {x: 0, y: 0});
+    this.medalsChart.update();
+  }
+
+  onClickCountry(): void {
+    const activeElements = this.medalsChart.getActiveElements();
+    if (activeElements.length > 0) {
+      const country = this.datas().countries[activeElements[0].index];
+      this.navigateToCountry(country.id)
+    }
+  }
+
+  private navigateToCountry(id: number): void {
+    this.router.navigateByUrl(`/country/${id}`)
+  }
+
   buildPieChart(datas: MedalsChartDatas) {
-    const pieChart = new Chart("MedalsChart", {
+    this.medalsChart = new Chart("MedalsChart", {
       type: 'pie',
       data: {
-        labels: datas.countries,
+        labels: datas.countries.map(country => country.name),
         datasets: [{
           label: 'Medals',
           data: datas.sumOfAllMedalsYears,
@@ -35,23 +102,17 @@ export class MedalsChartComponent implements OnInit  {
       },
       options: {
         aspectRatio: 2.5,
-        onClick: (e) => {
-          if (e.native) {
-            const points = pieChart.getElementsAtEventForMode(e.native, 'point', { intersect: true }, true)
-            if (points.length) {
-              const firstPoint = points[0];
-              const countryName = pieChart.data.labels ? pieChart.data.labels[firstPoint.index] : '';
-              this.router.navigate(['country', countryName]);
-            }
-          }
-        }
       }
     });
-    this.medalsChart = pieChart;
   }
 }
 
-export type MedalsChartDatas = {
-  countries: string[]
+export interface CountryData {
+  id: number
+  name: string
+}
+
+export interface MedalsChartDatas {
+  countries: CountryData[]
   sumOfAllMedalsYears: number[]
 }

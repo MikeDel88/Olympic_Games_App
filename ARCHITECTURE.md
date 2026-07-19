@@ -42,6 +42,8 @@ src/
     │       ├── not-found.component.html
     │       └── not-found.component.scss
     ├── shared/
+    │   ├── accessibility/
+    │   │   └── accessibility-chart.interface.ts
     │   └── components/
     │       ├── header/
     │       │   ├── header.component.ts
@@ -71,7 +73,7 @@ src/
 Contient les **composants intelligents** (smart / container components), un sous-dossier par page routée de l'application :
 
 - **`HomeComponent`** (route `''`) : page d'accueil, vue d'ensemble des données olympiques. Affiche le nombre de JO et de pays participants, ainsi qu'un graphique en camembert (`MedalsChartComponent`) du total de médailles par pays.
-- **`CountryComponent`** (route `country/:countryName`) : page de détail d'un pays. Affiche le nombre de participations, de médailles et d'athlètes, ainsi qu'un graphique en ligne (`CountryChartComponent`) des médailles par édition des JO.
+- **`CountryComponent`** (route `country/:id`) : page de détail d'un pays. Affiche le nombre de participations, de médailles et d'athlètes, ainsi qu'un graphique en ligne (`CountryChartComponent`) des médailles par édition des JO.
 - **`NotFoundComponent`** (routes `not-found` et `**`) : page 404 affichée pour toute route inconnue.
 
 Ces composants sont les seuls à orchestrer la logique de la page : ils injectent `DataService`, récupèrent les données (avec `takeUntilDestroyed` pour éviter les fuites de mémoire), les transforment via les fonctions pures de `core/utils/olympic.utils.ts`, puis délèguent l'affichage aux composants de `shared/components/` via leurs inputs.
@@ -82,8 +84,16 @@ Contient les **composants de présentation**, purement pilotés par leurs `input
 
 - **`HeaderComponent`** : en-tête de page, affiche le titre et une liste de KPIs via `HeaderInfosComponent`.
 - **`HeaderInfosComponent`** : affiche un KPI (`label` + `count`), défini par le type `HeaderInfos`.
-- **`MedalsChartComponent`** : graphique en camembert (Chart.js) du total de médailles par pays. Un clic sur une part navigue vers `country/:countryName` (seule exception à la règle : ce composant injecte le `Router` pour cette navigation).
+- **`MedalsChartComponent`** : graphique en camembert (Chart.js) du total de médailles par pays. Un clic sur une part navigue vers `country/:id` (seule exception à la règle : ce composant injecte le `Router` pour cette navigation).
 - **`CountryChartComponent`** : graphique en ligne (Chart.js) du nombre de médailles par édition des JO pour un pays.
+
+### `shared/accessibility/` — Contrats d'accessibilité
+
+Regroupe les artefacts liés à l'**accessibilité** de la couche présentation. Le dossier est nommé par domaine (le *quoi*), le suffixe du fichier indique le rôle technique (le *comment*) :
+
+- **`accessibility-chart.interface.ts`** : interface `AccessibilityChart`, contrat de comportement que doivent respecter les composants graphiques `<canvas>` (Chart.js) pour être accessibles : index actif (`activeIndex`), aria-label dynamique (`ariaLabel`), navigation clavier (`onKeydown`, `setActiveSlice`, `onClearActiveSlice`). Implémentée par `MedalsChartComponent` (et à terme `CountryChartComponent`).
+
+Ce dossier n'est pas dans `models/` car ses interfaces dépendent d'Angular (`Signal`, `WritableSignal`) et décrivent un comportement d'UI, pas un type métier. Il pourra accueillir d'autres artefacts d'accessibilité (directives de focus, utilitaires aria, ...).
 
 ### `models/` — Domaine
 
@@ -101,7 +111,7 @@ Ces modèles sont utilisés par toutes les couches pour typer les données de bo
 `DataService` est la **façade** exposée au reste de l'application (`providedIn: 'root'`, singleton). C'est le **point d'entrée unique** des composants de page pour obtenir des données :
 
 - `getOlympics(): Observable<Olympics>` : l'ensemble des données olympiques (page d'accueil).
-- `getOlympic(country: string): Observable<Olympic | undefined>` : les données d'un pays (page de détail).
+- `getOlympic(countryId: number): Observable<Olympic | undefined>` : les données d'un pays (page de détail).
 
 Il s'appuie sur deux collaborateurs de la couche `core/` :
 
@@ -140,6 +150,6 @@ Cette architecture est conçue pour brancher un vrai back-end sans refonte :
 ## Conventions
 
 - **Dossiers et fichiers en kebab-case** (`medals-chart.component.ts`, `olympic-api.api.ts`) ; classes en PascalCase (`MedalsChartComponent`, `OlympicApi`).
-- **Suffixes explicites** indiquant le rôle du fichier : `.component`, `.service`, `.api`, `.model`, `.utils`.
+- **Suffixes explicites** indiquant le rôle du fichier : `.component`, `.service`, `.api`, `.model`, `.utils`, `.interface`.
 - **Composants standalone** : les pages et les composants partagés déclarent leurs imports directement dans le décorateur du composant ; le `NgModule` racine (`app.module.ts`) ne sert qu'au bootstrap et au routing.
 - **Réactivité moderne** : `inject()` pour l'injection de dépendances, `input()` signals pour les entrées des composants, `takeUntilDestroyed` pour le nettoyage des abonnements RxJS.
