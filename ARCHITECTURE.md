@@ -44,23 +44,32 @@ src/
     ├── shared/
     │   ├── accessibility/
     │   │   └── accessibility-chart.interface.ts
-    │   └── components/
-    │       ├── header/
-    │       │   ├── header.component.ts
-    │       │   ├── header.component.html
-    │       │   └── header.component.scss
-    │       ├── header-infos/
-    │       │   ├── header-infos.component.ts
-    │       │   ├── header-infos.component.html
-    │       │   └── header-infos.component.scss
-    │       ├── medals-chart/
-    │       │   ├── medals-chart.component.ts
-    │       │   ├── medals-chart.component.html
-    │       │   └── medals-chart.component.scss
-    │       └── country-chart/
-    │           ├── country-chart.component.ts
-    │           ├── country-chart.component.html
-    │           └── country-chart.component.scss
+    │   ├── components/
+    │   │   ├── header/
+    │   │   │   ├── header.component.ts
+    │   │   │   ├── header.component.html
+    │   │   │   └── header.component.scss
+    │   │   ├── header-infos/
+    │   │   │   ├── header-infos.component.ts
+    │   │   │   ├── header-infos.component.html
+    │   │   │   └── header-infos.component.scss
+    │   │   ├── loader/
+    │   │   │   ├── loader.component.ts
+    │   │   │   ├── loader.component.html
+    │   │   │   └── loader.component.scss
+    │   │   ├── medals-chart/
+    │   │   │   ├── medals-chart.component.ts
+    │   │   │   ├── medals-chart.component.html
+    │   │   │   └── medals-chart.component.scss
+    │   │   └── country-chart/
+    │   │       ├── country-chart.component.ts
+    │   │       ├── country-chart.component.html
+    │   │       └── country-chart.component.scss
+    │   └── styles/
+    │       ├── breakpoint.style.scss
+    │       ├── colors.style.scss
+    │       ├── colors-chart.style.ts
+    │       └── grid.style.scss
     ├── app.component.ts
     ├── app.module.ts
     └── app-routing.module.ts
