@@ -30,13 +30,20 @@ export class HomeComponent implements OnInit {
   private readonly router = inject(Router)
 
   ngOnInit() {
+    this.getDatas()
+  }
+
+  private getDatas(): void {
     this.dataService.getOlympics()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => {
-        if (data && data.length > 0)
-          this.updateUi(data)
-        else
-          this.router.navigateByUrl("/not-found")
+      .subscribe({
+        next: data => {
+          if (data)
+            this.updateUi(data)
+          else
+            this.router.navigateByUrl("/not-found")
+        },
+        error: () => this.router.navigateByUrl("/not-found")
       })
   }
 

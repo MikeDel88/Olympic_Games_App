@@ -56,12 +56,15 @@ export class CountryComponent implements OnInit {
   private getDatas() {
     this.dataService.getOlympic(this.countryId)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => {
-        if (data)
-          this.updateUi(data)
-        else
-          this.router.navigateByUrl("/not-found")
-      });
+      .subscribe({
+        next: data => {
+          if (data)
+            this.updateUi(data)
+          else
+            this.router.navigateByUrl("/not-found")
+        },
+        error: () => this.router.navigateByUrl("/not-found")
+      })
   }
 
   private updateUi(data: Olympic): void {
