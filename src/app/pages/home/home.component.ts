@@ -32,7 +32,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getOlympics()
-      .pipe(delay(5000))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => {
         if (data && data.length > 0)

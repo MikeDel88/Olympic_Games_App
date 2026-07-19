@@ -56,7 +56,6 @@ export class CountryComponent implements OnInit {
 
   private getDatas() {
     this.dataService.getOlympic(this.countryId)
-      .pipe(delay(5000))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(data => {
         if (data)
