@@ -5,6 +5,7 @@ import {MedalsChartComponent, MedalsChartDatas} from "../../shared/components/me
 import {DataService} from "../../core/services/data.service";
 import {Olympics} from "../../models/olympic/olympic.model";
 import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/olympic.utils";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -17,18 +18,24 @@ import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/o
   standalone: true
 })
 export class HomeComponent implements OnInit {
+
   totalCountries!: number;
   totalJOs!: number;
-  error!:string;
   medalsChartDatas!: MedalsChartDatas;
 
   private destroyRef = inject(DestroyRef);
   private dataService= inject(DataService)
+  private readonly router = inject(Router)
 
   ngOnInit() {
     this.dataService.getOlympics()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => { if (data && data.length > 0) this.updateUi(data) })
+      .subscribe(data => {
+        if (data && data.length > 0)
+          this.updateUi(data)
+        else
+          this.router.navigateByUrl("/not-found")
+      })
   }
 
   private updateUi(data: Olympics) {
