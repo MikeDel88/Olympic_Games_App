@@ -1,0 +1,28 @@
+@use "app/shared/styles/breakpoint.style" as bp;
+
+$columns-mobile: 4;
+$columns-tablet: 8;
+$columns-desktop: 12;
+$grid-gap: 20px;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat($columns-mobile, 1fr); // mobile : 4 colonnes
+  gap: $grid-gap;
+  margin: 5px;
+
+  @include bp.tablet  { grid-template-columns: repeat($columns-tablet, 1fr); }  // 8 colonnes
+  @include bp.desktop { grid-template-columns: repeat($columns-desktop, 1fr); } // 12 colonnes
+
+  // min-width: auto par défaut sur les items de grille : les canvas Chart.js
+  // refuseraient de rétrécir au resize sans ce reset
+  > * { min-width: 0; }
+}
+
+// Mobile-first : chaque item occupe toute la ligne par défaut
+.col-full { grid-column: 1 / -1; }
+
+// Desktop : bloc de 8 colonnes centré (colonnes 3 à 10 sur 12)
+@include bp.desktop {
+  .col-desktop-8-center { grid-column: 3 / span 8; }
+}

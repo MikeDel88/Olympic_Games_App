@@ -2,11 +2,7 @@
 
 @use "app/shared/styles/colors.style" as colors;
 @use "app/shared/styles/breakpoint.style" as bp;
-
-
-.heading {
-    flex-direction: column;
-}
+@use "app/shared/styles/grid.style";
 
 .center {
     display: flex;
@@ -25,27 +21,38 @@
 
 .split {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     gap: 20px;
     margin: 5px;
 
-    div {
+    @include bp.tablet {
+      flex-direction: row;
+    }
+
+    .header-infos {
         padding: 10px;
         border: solid colors.$primary-color 1px;
         border-radius: 10px;
-        color: colors.$on-primary-color;
+        color: colors.$header-label;
         margin: 0;
 
-        p {
+        * {
             text-align: center;
             margin: 0;
         }
 
-        p:last-child {
+        .header-count {
             font-weight: bold;
-            color: black;
+            color: colors.$header-count;
         }
     }
 }
+
+.chart-container {
+    position: relative; // requis par Chart.js responsive
+    width: 100%;
+}
+
+
 

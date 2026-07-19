@@ -1,15 +1,7 @@
-:host {
-  display: block;
-  width: 100%;
-}
-
-.chart-container {
-  position: relative;
-  width: 100%;
-}
+@use "app/shared/styles/colors.style" as colors;
 
 canvas:focus-visible {
-  outline: 3px solid #0b868f;
+  outline: 3px solid colors.$primary-color;
   outline-offset: 4px;
   border-radius: 4px;
 }

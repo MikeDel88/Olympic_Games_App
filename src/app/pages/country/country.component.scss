@@ -1,19 +1,12 @@
-
-.wrapper-container {
-    display: flex;
-    justify-content: center;
-}
+@use "app/shared/styles/breakpoint.style" as bp;
 
 .container {
-    width: 50%;
-    h2{
-        text-align: center;
-        color: gray;
-    }
-}
+  width: 100%;
 
-@media screen and (max-width: 1000px) {
-    .container {
-        width: 100%;
+  .legend {
+    @include bp.desktop {
+      text-align: center;
+      color: gray;
     }
+  }
 }

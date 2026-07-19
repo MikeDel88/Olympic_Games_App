@@ -1,5 +1,5 @@
-<div>
-  <div>
+<div class="grid">
+  <div class="col-full">
       <app-header
         [titlePage]="titlePage"
         [infos]="[
@@ -9,15 +9,15 @@
         ]"
       />
   </div>
-  <div class="chart-container wrapper-container">
+  <div class="chart-container col-full col-desktop-8-center">
     <div class="container">
       @if(countryChartDatas) {
         <app-country-chart [datas]="countryChartDatas"/>
       }
-      <h2>Date</h2>
+      <h2 class="legend">Date</h2>
     </div>
   </div>
-  <div class="center">
+  <div class="center col-full">
     <a routerLink="/">Go back</a>
   </div>
 </div>
