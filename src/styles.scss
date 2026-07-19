@@ -1,4 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
+@use "app/shared/styles/colors.style" as colors;
+@use "app/shared/styles/breakpoint.style" as bp;
+
+
 .heading {
     flex-direction: column;
 }
@@ -9,10 +14,10 @@
     margin: 5px;
 
     div {
-        background: #0b868f;
+        background: colors.$primary-color;
         padding: 10px;
         border-radius: 10px;
-        color: white;
+        color: colors.$text-color;
         font-size: 14px;
         font-weight: bold;
     }
@@ -27,9 +32,9 @@
 
     div {
         padding: 10px;
-        border: solid #0b868f 1px;
+        border: solid colors.$primary-color 1px;
         border-radius: 10px;
-        color: gray;
+        color: colors.$on-primary-color;
         margin: 0;
 
         p {
