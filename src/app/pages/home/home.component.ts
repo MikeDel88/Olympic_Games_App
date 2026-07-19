@@ -7,7 +7,6 @@ import {Olympics} from "../../models/olympic/olympic.model";
 import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/olympic.utils";
 import {Router} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
-import {delay} from "rxjs";
 
 @Component({
   selector: 'app-home',

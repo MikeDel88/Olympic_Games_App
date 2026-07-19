@@ -12,7 +12,6 @@ import {
 } from "../../core/utils/olympic.utils";
 import {Olympic} from "../../models/olympic/olympic.model";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
-import {delay} from "rxjs";
 
 
 @Component({
