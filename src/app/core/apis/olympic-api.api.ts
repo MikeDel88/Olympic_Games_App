@@ -37,7 +37,7 @@ export class OlympicApi {
     let errorMessage = "Une erreur est survenue lors de la requête."
 
     switch(error.status) {
-      case 404: errorMessage = "Données introuvable";
+      case 404: errorMessage = "Aucune donnée.";
       break;
       case 500: errorMessage = "Le serveur n'a pas répondu";
       break;
