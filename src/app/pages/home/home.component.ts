@@ -22,6 +22,8 @@ import {MedalsChartDatas} from "../../shared/components/medals-chart/interfaces/
 })
 export class HomeComponent implements OnInit {
 
+  error!: string | undefined
+
   totalCountries!: number;
   totalJOs!: number;
   medalsChartDatas!: MedalsChartDatas;
@@ -44,7 +46,7 @@ export class HomeComponent implements OnInit {
           else
             this.router.navigateByUrl("/not-found")
         },
-        error: () => this.router.navigateByUrl("/not-found")
+        error: (error: Error) => this.error = error.message
       })
   }
 

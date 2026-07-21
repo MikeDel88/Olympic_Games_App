@@ -29,6 +29,8 @@ import {CountryChartDatas} from "../../shared/components/country-chart/interface
 })
 export class CountryComponent implements OnInit {
 
+  error!: string | undefined
+
   countryChartDatas!: CountryChartDatas
   countryId!: number
 
@@ -64,7 +66,7 @@ export class CountryComponent implements OnInit {
           else
             this.router.navigateByUrl("/not-found")
         },
-        error: () => this.router.navigateByUrl("/not-found")
+        error: (error: Error) => this.error = error.message
       })
   }
 
