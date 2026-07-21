@@ -4,6 +4,10 @@
 @use "app/shared/styles/breakpoint.style" as bp;
 @use "app/shared/styles/grid.style";
 
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
 .center {
     display: flex;
     justify-content: center;
