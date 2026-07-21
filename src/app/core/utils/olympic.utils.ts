@@ -51,3 +51,9 @@ export function sumOfAllMedalsYears(olympics: Olympics): number[] {
   return getMedalsOlympics(olympics)
     .map((items: number[]) => items.reduce((acc: number, i: number) => acc + i, 0));
 }
+
+export function sortByLeaders(a:Olympic, b: Olympic): 0 | 1 | -1 {
+  const olympicA = getTotalMedals(a);
+  const olympicB = getTotalMedals(b);
+  return (olympicA > olympicB) ? -1 : (olympicA < olympicB) ? 1 : 0;
+}
