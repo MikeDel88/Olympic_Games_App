@@ -1,13 +1,25 @@
-import {Component, computed, inject, input, InputSignal, OnInit, OnDestroy, Signal, signal, WritableSignal} from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  InputSignal,
+  OnInit,
+  OnDestroy,
+  Signal,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import Chart, {TooltipModel} from 'chart.js/auto';
 import {Router} from '@angular/router';
 import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
 import {ChartColors} from "../../styles/colors-chart.style";
 import {getCountriesName} from "../../../core/utils/olympic.utils";
 import {MedalsChartDatas} from "./interfaces/medals-chart-datas.interface";
-import {toSignal} from "@angular/core/rxjs-interop";
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import {map} from "rxjs";
+import {BreakpointService} from "../../responsive/breakpoint.service";
+
+
+
 
 @Component({
   selector: 'app-medals-chart',
@@ -18,17 +30,11 @@ import {map} from "rxjs";
 })
 export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityChart {
 
-  medalsChart!: Chart<"pie", number[], string>;
+  medalsChart!: Chart<"bar", number[], string>;
 
   private tooltipEl?: HTMLDivElement;
 
-  private breakpointObserver = inject(BreakpointObserver);
-  isDesktop = toSignal(
-    this.breakpointObserver
-      .observe([Breakpoints.Tablet, Breakpoints.Large, Breakpoints.XLarge])
-      .pipe(map(result => result.matches)),
-    { initialValue: false }
-  );
+  private breakpointService = inject(BreakpointService)
 
   readonly datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
 
@@ -110,20 +116,21 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
 
   buildPieChart(datas: MedalsChartDatas) {
     this.medalsChart = new Chart("MedalsChart", {
-      type: 'pie',
+      type: 'bar',
       data: {
         labels: getCountriesName(datas.countries),
         datasets: [{
           label: 'Medals',
+          barThickness: 'flex',
           data: datas.sumOfAllMedalsYears,
           backgroundColor: Object.values(ChartColors),
-          hoverOffset: 4
         }],
       },
       options: {
         responsive: true,
-        aspectRatio: this.isDesktop() ? 2.5 : 1,
+        aspectRatio: this.breakpointService.isDesktop() ? 2.5 : 1,
         maintainAspectRatio: true,
+        indexAxis: "y",
         plugins: {
           tooltip: {
             enabled: false,
@@ -134,7 +141,7 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
     });
   }
 
-  private renderTooltip(context: { chart: Chart, tooltip: TooltipModel<"pie"> }): void {
+  private renderTooltip(context: { chart: Chart, tooltip: TooltipModel<"bar"> }): void {
     const {chart, tooltip} = context;
 
     if (!this.tooltipEl) {

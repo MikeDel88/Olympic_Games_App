@@ -1,7 +1,8 @@
-import {Component, input, InputSignal, OnInit} from '@angular/core';
+import {Component, inject, input, InputSignal, OnInit} from '@angular/core';
 import Chart from 'chart.js/auto';
 import {ChartColors} from "../../styles/colors-chart.style";
 import {CountryChartDatas} from "./interfaces/country-chart-datas.interfaces";
+import {BreakpointService} from "../../responsive/breakpoint.service";
 
 @Component({
   selector: 'app-country-chart',
@@ -13,6 +14,8 @@ import {CountryChartDatas} from "./interfaces/country-chart-datas.interfaces";
 export class CountryChartComponent implements OnInit {
 
   countryChart!: Chart<"line", string[], number>;
+
+  private readonly breakpointService = inject(BreakpointService)
 
   datas: InputSignal<CountryChartDatas> = input.required<CountryChartDatas>();
 
@@ -35,7 +38,7 @@ export class CountryChartComponent implements OnInit {
         ]
       },
       options: {
-        aspectRatio: 2.5,
+        aspectRatio: this.breakpointService.isDesktop() ? 2.5 : 1,
         scales: {
           y: {
             min: 0
