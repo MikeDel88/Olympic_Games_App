@@ -1,5 +1,5 @@
-import {Component, computed, inject, input, InputSignal, OnInit, Signal, signal, WritableSignal} from '@angular/core';
-import Chart from 'chart.js/auto';
+import {Component, computed, inject, input, InputSignal, OnInit, OnDestroy, Signal, signal, WritableSignal} from '@angular/core';
+import Chart, {TooltipModel} from 'chart.js/auto';
 import {Router} from '@angular/router';
 import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
 import {ChartColors} from "../../styles/colors-chart.style";
@@ -12,9 +12,11 @@ import {getCountriesName} from "../../../core/utils/olympic.utils";
   templateUrl: './medals-chart.component.html',
   styleUrl: './medals-chart.component.scss'
 })
-export class MedalsChartComponent implements OnInit, AccessibilityChart  {
+export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityChart {
 
   medalsChart!: Chart<"pie", number[], string>;
+
+  private tooltipEl?: HTMLDivElement;
 
   readonly datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
 
@@ -34,6 +36,10 @@ export class MedalsChartComponent implements OnInit, AccessibilityChart  {
 
   ngOnInit(): void {
     this.buildPieChart(this.datas());
+  }
+
+  ngOnDestroy(): void {
+    this.tooltipEl?.remove();
   }
 
   onKeydown(event: KeyboardEvent): void {
@@ -104,8 +110,39 @@ export class MedalsChartComponent implements OnInit, AccessibilityChart  {
       },
       options: {
         aspectRatio: 2.5,
+        plugins: {
+          tooltip: {
+            enabled: false,
+            external: context => this.renderTooltip(context)
+          }
+        }
       }
     });
+  }
+
+  private renderTooltip(context: { chart: Chart, tooltip: TooltipModel<"pie"> }): void {
+    const {chart, tooltip} = context;
+
+    if (!this.tooltipEl) {
+      this.tooltipEl = document.createElement('div');
+      this.tooltipEl.classList.add('chart-tooltip');
+      chart.canvas.parentElement?.appendChild(this.tooltipEl);
+    }
+
+    if (tooltip.opacity === 0) {
+      this.tooltipEl.style.opacity = '0';
+      return;
+    }
+
+    const dataPoint = tooltip.dataPoints[0];
+    this.tooltipEl.innerHTML = `
+      <div class="chart-tooltip-title">${dataPoint.label}</div>
+      <div>🥇 ${dataPoint.formattedValue}</div>
+    `;
+
+    this.tooltipEl.style.opacity = '1';
+    this.tooltipEl.style.left = `${chart.canvas.offsetLeft + tooltip.caretX}px`;
+    this.tooltipEl.style.top = `${chart.canvas.offsetTop + tooltip.caretY}px`;
   }
 }
 
