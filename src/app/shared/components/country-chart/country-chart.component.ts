@@ -27,6 +27,7 @@ export class CountryChartComponent implements OnInit {
         datasets: [
           {
             label: "medals",
+            pointStyle: false,
             data: datas.medals,
             backgroundColor: ChartColors.teal
           },
