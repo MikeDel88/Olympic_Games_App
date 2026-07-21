@@ -1,12 +1,13 @@
 import {Component, OnInit, inject, DestroyRef } from '@angular/core';
 import {HeaderComponent} from "../../shared/components/header/header.component";
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {MedalsChartComponent, MedalsChartDatas} from "../../shared/components/medals-chart/medals-chart.component";
+import {MedalsChartComponent} from "../../shared/components/medals-chart/medals-chart.component";
 import {DataService} from "../../core/services/data.service";
 import {Olympics} from "../../models/olympic/olympic.model";
 import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/olympic.utils";
 import {Router} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {MedalsChartDatas} from "../../shared/components/medals-chart/interfaces/medals-chart-datas.interface";
 
 @Component({
   selector: 'app-home',
