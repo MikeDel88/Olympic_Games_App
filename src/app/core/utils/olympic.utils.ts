@@ -38,6 +38,10 @@ export function getCountries(olympics: Olympics): CountryData[] {
   }));
 }
 
+export function getCountriesName(countries: CountryData[]): string[] {
+  return countries.map(country => country.name)
+}
+
 export function getMedalsOlympics(olympics: Olympics): number[][] {
   return olympics
     .map((olympic: Olympic) => olympic.participations.map((participation: Participation) => (participation.medalsCount)));

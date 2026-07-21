@@ -3,6 +3,7 @@ import Chart from 'chart.js/auto';
 import {Router} from '@angular/router';
 import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
 import {ChartColors} from "../../styles/colors-chart.style";
+import {getCountriesName} from "../../../core/utils/olympic.utils";
 
 @Component({
   selector: 'app-medals-chart',
@@ -93,7 +94,7 @@ export class MedalsChartComponent implements OnInit, AccessibilityChart  {
     this.medalsChart = new Chart("MedalsChart", {
       type: 'pie',
       data: {
-        labels: datas.countries.map(country => country.name),
+        labels: getCountriesName(datas.countries),
         datasets: [{
           label: 'Medals',
           data: datas.sumOfAllMedalsYears,
