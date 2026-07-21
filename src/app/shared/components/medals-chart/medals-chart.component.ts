@@ -5,6 +5,9 @@ import {AccessibilityChart} from '../../accessibility/accessibility-chart.interf
 import {ChartColors} from "../../styles/colors-chart.style";
 import {getCountriesName} from "../../../core/utils/olympic.utils";
 import {MedalsChartDatas} from "./interfaces/medals-chart-datas.interface";
+import {toSignal} from "@angular/core/rxjs-interop";
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-medals-chart',
@@ -18,6 +21,14 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
   medalsChart!: Chart<"pie", number[], string>;
 
   private tooltipEl?: HTMLDivElement;
+
+  private breakpointObserver = inject(BreakpointObserver);
+  isDesktop = toSignal(
+    this.breakpointObserver
+      .observe([Breakpoints.Tablet, Breakpoints.Large, Breakpoints.XLarge])
+      .pipe(map(result => result.matches)),
+    { initialValue: false }
+  );
 
   readonly datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
 
@@ -111,7 +122,7 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
       },
       options: {
         responsive: true,
-        aspectRatio: 3.5,
+        aspectRatio: this.isDesktop() ? 2.5 : 1,
         maintainAspectRatio: true,
         plugins: {
           tooltip: {
