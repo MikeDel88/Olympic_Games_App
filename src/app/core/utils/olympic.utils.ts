@@ -1,6 +1,6 @@
 import {Olympic, Olympics} from "../../models/olympic/olympic.model";
 import {Participation} from "../../models/participation/participation.model";
-import {CountryData} from "../../shared/components/medals-chart/medals-chart.component";
+import {CountryData} from "../../shared/components/medals-chart/interfaces/country-data.interface";
 
 
 export function getTotalEntries(olympic: Olympic): number {
