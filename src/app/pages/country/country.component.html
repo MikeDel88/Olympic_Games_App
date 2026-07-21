@@ -22,9 +22,9 @@
       <button routerLink="/">Retour</button>
     </div>
   } @else if(error) {
-    <div>{{ error }}</div>
+    <div class="col-full col-desktop-8-center">{{ error }}</div>
   } @else {
-    <app-loader message="Chargement des informations du pays"/>
+    <app-loader message="Chargement des informations du pays" class="col-full"/>
   }
 
 </div>

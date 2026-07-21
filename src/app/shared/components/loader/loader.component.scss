@@ -1,8 +1,20 @@
 @use "app/shared/styles/colors.style" as color;
 
+.loader-container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .spinner {
   --size: 1px;
-
   width: calc(48 * var(--size));
   height: calc(48 * var(--size));
   border: calc(5 * var(--size)) solid color.$primary-color;

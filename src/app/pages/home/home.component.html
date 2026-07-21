@@ -13,8 +13,8 @@
     </div>
     <app-medals-chart class="col-full col-desktop-8-center" [datas]="medalsChartDatas"/>
   } @else if (error) {
-    <div>{{ error }}</div>
+    <div class="col-full col-desktop-8-center">{{ error }}</div>
   } @else {
-    <app-loader message="Chargement des pays"/>
+    <app-loader message="Chargement des pays" class="col-full"/>
   }
 </div>
