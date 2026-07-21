@@ -1,6 +1,7 @@
-import { Component, input, OnInit, InputSignal } from '@angular/core';
+import {Component, input, InputSignal, OnInit} from '@angular/core';
 import Chart from 'chart.js/auto';
 import {ChartColors} from "../../styles/colors-chart.style";
+import {CountryChartDatas} from "./interfaces/country-chart-datas.interfaces";
 
 @Component({
   selector: 'app-country-chart',
@@ -20,7 +21,7 @@ export class CountryChartComponent implements OnInit {
   }
 
   buildChart(datas: CountryChartDatas) {
-    const lineChart = new Chart("CountryChart", {
+    this.countryChart = new Chart("CountryChart", {
       type: 'line',
       data: {
         labels: datas.years,
@@ -37,11 +38,5 @@ export class CountryChartComponent implements OnInit {
         aspectRatio: 2.5
       }
     });
-    this.countryChart = lineChart;
   }
-}
-
-export type CountryChartDatas = {
-  years: number[]
-  medals: string[]
 }

@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
 import {ChartColors} from "../../styles/colors-chart.style";
 import {getCountriesName} from "../../../core/utils/olympic.utils";
+import {MedalsChartDatas} from "./interfaces/medals-chart-datas.interface";
 
 @Component({
   selector: 'app-medals-chart',
@@ -109,7 +110,9 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
         }],
       },
       options: {
-        aspectRatio: 2.5,
+        responsive: true,
+        aspectRatio: 3.5,
+        maintainAspectRatio: true,
         plugins: {
           tooltip: {
             enabled: false,
@@ -144,15 +147,4 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
     this.tooltipEl.style.left = `${chart.canvas.offsetLeft + tooltip.caretX}px`;
     this.tooltipEl.style.top = `${chart.canvas.offsetTop + tooltip.caretY}px`;
   }
-}
-
-
-export interface CountryData {
-  id: number
-  name: string
-}
-
-export interface MedalsChartDatas {
-  countries: CountryData[]
-  sumOfAllMedalsYears: number[]
 }
