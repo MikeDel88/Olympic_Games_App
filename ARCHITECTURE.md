@@ -58,10 +58,15 @@ src/
     │   │   │   ├── loader.component.html
     │   │   │   └── loader.component.scss
     │   │   ├── medals-chart/
+    │   │   │   ├── interfaces/
+    │   │   │   │   ├── country-data.interface.ts
+    │   │   │   │   └── medals-chart-datas.interface.ts
     │   │   │   ├── medals-chart.component.ts
     │   │   │   ├── medals-chart.component.html
     │   │   │   └── medals-chart.component.scss
     │   │   └── country-chart/
+    │   │       ├── interfaces/
+    │   │       │   └── country-chart-datas.interfaces.ts
     │   │       ├── country-chart.component.ts
     │   │       ├── country-chart.component.html
     │   │       └── country-chart.component.scss
@@ -93,8 +98,10 @@ Contient les **composants de présentation**, purement pilotés par leurs `input
 
 - **`HeaderComponent`** : en-tête de page, affiche le titre et une liste de KPIs via `HeaderInfosComponent`.
 - **`HeaderInfosComponent`** : affiche un KPI (`label` + `count`), défini par le type `HeaderInfos`.
-- **`MedalsChartComponent`** : graphique en camembert (Chart.js) du total de médailles par pays. Un clic sur une part navigue vers `country/:id` (seule exception à la règle : ce composant injecte le `Router` pour cette navigation).
-- **`CountryChartComponent`** : graphique en ligne (Chart.js) du nombre de médailles par édition des JO pour un pays.
+- **`MedalsChartComponent`** : graphique en camembert (Chart.js) du total de médailles par pays. Un clic sur une part navigue vers `country/:id` (seule exception à la règle : ce composant injecte le `Router` pour cette navigation). Son `input()` est typé par `MedalsChartDatas` (`countries: CountryData[]`, `sumOfAllMedalsYears: number[]`), défini dans son sous-dossier `interfaces/`.
+- **`CountryChartComponent`** : graphique en ligne (Chart.js) du nombre de médailles par édition des JO pour un pays. Son `input()` est typé par `CountryChartDatas` (`years: number[]`, `medals: string[]`), défini dans son sous-dossier `interfaces/`.
+
+Chaque composant graphique embarque ses propres types d'input dans un sous-dossier `interfaces/` local (colocation) plutôt que dans `models/`, car ce sont des **DTOs de présentation** dérivés du domaine (ex. `CountryData` ne garde que `id`/`name` d'un `Olympic`) et non des types métier bruts.
 
 ### `shared/accessibility/` — Contrats d'accessibilité
 
