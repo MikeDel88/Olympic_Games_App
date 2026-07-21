@@ -9,12 +9,12 @@
     justify-content: center;
     margin: 5px;
 
-    div {
+    h2 {
         background: colors.$primary-color;
         padding: 10px;
         border-radius: 10px;
         color: colors.$text-color;
-        font-size: 14px;
+        font-size: 18px;
         font-weight: bold;
     }
 }
@@ -32,7 +32,7 @@
 
     .header-infos {
         padding: 10px;
-        border: solid colors.$primary-color 1px;
+        border: solid colors.$primary-color 2px;
         border-radius: 10px;
         color: colors.$header-label;
         margin: 0;
