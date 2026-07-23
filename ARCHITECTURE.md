@@ -86,7 +86,7 @@ src/
 
 Contient les **composants intelligents** (smart / container components), un sous-dossier par page routée de l'application :
 
-- **`HomeComponent`** (route `''`) : page d'accueil, vue d'ensemble des données olympiques. Affiche le nombre de JO et de pays participants, ainsi qu'un graphique en camembert (`MedalsChartComponent`) du total de médailles par pays.
+- **`HomeComponent`** (route `''`) : page d'accueil, vue d'ensemble des données olympiques. Affiche le nombre de JO et de pays participants, ainsi qu'un graphique en barres (`MedalsChartComponent`) du total de médailles par pays.
 - **`CountryComponent`** (route `country/:id`) : page de détail d'un pays. Affiche le nombre de participations, de médailles et d'athlètes, ainsi qu'un graphique en ligne (`CountryChartComponent`) des médailles par édition des JO.
 - **`NotFoundComponent`** (routes `not-found` et `**`) : page 404 affichée pour toute route inconnue.
 
@@ -98,7 +98,7 @@ Contient les **composants de présentation**, purement pilotés par leurs `input
 
 - **`HeaderComponent`** : en-tête de page, affiche le titre et une liste de KPIs via `HeaderInfosComponent`.
 - **`HeaderInfosComponent`** : affiche un KPI (`label` + `count`), défini par le type `HeaderInfos`.
-- **`MedalsChartComponent`** : graphique en camembert (Chart.js) du total de médailles par pays. Un clic sur une part navigue vers `country/:id` (seule exception à la règle : ce composant injecte le `Router` pour cette navigation). Son `input()` est typé par `MedalsChartDatas` (`countries: CountryData[]`, `sumOfAllMedalsYears: number[]`), défini dans son sous-dossier `interfaces/`.
+- **`MedalsChartComponent`** : graphique en barres horizontales (Chart.js) du total de médailles par pays. Un clic sur une barre navigue vers `country/:id` (seule exception à la règle : ce composant injecte le `Router` pour cette navigation). Son `input()` est typé par `MedalsChartDatas` (`countries: CountryData[]`, `sumOfAllMedalsYears: number[]`), défini dans son sous-dossier `interfaces/`.
 - **`CountryChartComponent`** : graphique en ligne (Chart.js) du nombre de médailles par édition des JO pour un pays. Son `input()` est typé par `CountryChartDatas` (`years: number[]`, `medals: string[]`), défini dans son sous-dossier `interfaces/`.
 
 Chaque composant graphique embarque ses propres types d'input dans un sous-dossier `interfaces/` local (colocation) plutôt que dans `models/`, car ce sont des **DTOs de présentation** dérivés du domaine (ex. `CountryData` ne garde que `id`/`name` d'un `Olympic`) et non des types métier bruts.
