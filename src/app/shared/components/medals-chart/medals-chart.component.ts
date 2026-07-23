@@ -53,7 +53,7 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
   private readonly router = inject(Router);
 
   ngOnInit(): void {
-    this.buildPieChart(this.datas());
+    this.buildChart(this.datas());
   }
 
   ngOnDestroy(): void {
@@ -114,7 +114,7 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
     this.router.navigateByUrl(`/country/${id}`)
   }
 
-  buildPieChart(datas: MedalsChartDatas) {
+  private buildChart(datas: MedalsChartDatas) {
     this.medalsChart = new Chart("MedalsChart", {
       type: 'bar',
       data: {
