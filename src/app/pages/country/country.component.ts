@@ -38,32 +38,32 @@ export class CountryComponent implements OnInit {
   totalMedals!: number
   totalAthletes!: number
 
-  private dataService= inject(DataService)
-  private route = inject(ActivatedRoute)
-  private router = inject(Router)
+  private dataService: DataService = inject(DataService)
+  private route: ActivatedRoute = inject(ActivatedRoute)
+  private router: Router = inject(Router)
 
   ngOnInit(): void {
     this.checkParams()
     this.getDatas()
   }
 
-  private checkParams() {
+  private checkParams(): void {
     this.countryId = parseInt(this.route.snapshot.params["id"])
 
     if(isNaN(this.countryId))
       this.router.navigateByUrl("/not-found")
   }
 
-  private getDatas() {
+  private getDatas(): void {
     this.dataService.getOlympic(this.countryId)
       .subscribe({
-        next: data => {
+        next: (data: Olympic | undefined) => {
           if (data)
             this.updateUi(data)
           else
             this.router.navigateByUrl("/not-found")
         },
-        error: (error: Error) => this.error = error.message
+        error: (error: Error): string => this.error = error.message
       })
   }
 

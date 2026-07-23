@@ -4,7 +4,6 @@ import {MedalsChartComponent} from "../../shared/components/medals-chart/medals-
 import {DataService} from "../../core/services/data.service";
 import {Olympics} from "../../models/olympic/olympic.model";
 import {getCountries, getTotalJOs, sumOfAllMedalsYears} from "../../core/utils/olympic.utils";
-import {Router} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {MedalsChartDatas} from "../../shared/components/medals-chart/interfaces/medals-chart-datas.interface";
 
@@ -27,27 +26,26 @@ export class HomeComponent implements OnInit {
   totalJOs!: number;
   medalsChartDatas!: MedalsChartDatas;
 
-  private dataService= inject(DataService)
-  private readonly router = inject(Router)
+  private dataService: DataService = inject(DataService)
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getDatas()
   }
 
   private getDatas(): void {
     this.dataService.getOlympics()
       .subscribe({
-        next: data => {
+        next: (data: Olympics): void => {
           if (data.length > 0)
             this.updateUi(data)
           else
             this.error = "Aucune données n'a été trouvée."
         },
-        error: (error: Error) => this.error = error.message
+        error: (error: Error): string => this.error = error.message
       })
   }
 
-  private updateUi(data: Olympics) {
+  private updateUi(data: Olympics): void {
     this.totalJOs = getTotalJOs(data)
     const countries = getCountries(data);
     this.totalCountries = countries.length;

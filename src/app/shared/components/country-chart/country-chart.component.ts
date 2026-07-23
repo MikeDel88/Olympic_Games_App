@@ -16,19 +16,19 @@ export class CountryChartComponent implements OnInit, AccessibilityChart {
 
   countryChart!: Chart<"line", string[], number>;
 
-  private readonly breakpointService = inject(BreakpointService)
+  private readonly breakpointService: BreakpointService = inject(BreakpointService)
 
   datas: InputSignal<CountryChartDatas> = input.required<CountryChartDatas>();
 
   readonly activeIndex: WritableSignal<number | null> = signal(null);
 
-  readonly ariaLabel: Signal<string> = computed(() => {
-    const index = this.activeIndex();
+  readonly ariaLabel: Signal<string> = computed((): string => {
+    const index: number | null = this.activeIndex();
     if (index === null) {
       return 'Graphique du nombre de médailles par Jeux olympics. Utilisez les flèches pour parcourir les années.';
     }
-    const year = this.datas().years[index]
-    const medals = this.datas().medals[index]
+    const year: number = this.datas().years[index]
+    const medals: string = this.datas().medals[index]
     return `${year} : ${medals} médailles.`;
   });
 
@@ -36,7 +36,7 @@ export class CountryChartComponent implements OnInit, AccessibilityChart {
     this.buildChart(this.datas());
   }
 
-  private buildChart(datas: CountryChartDatas) {
+  private buildChart(datas: CountryChartDatas): void {
     this.countryChart = new Chart("CountryChart", {
       type: 'line',
       data: {

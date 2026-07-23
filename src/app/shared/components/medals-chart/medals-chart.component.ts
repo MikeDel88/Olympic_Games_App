@@ -10,13 +10,14 @@ import {
   signal,
   WritableSignal
 } from '@angular/core';
-import Chart, {TooltipModel} from 'chart.js/auto';
+import Chart, {ActiveElement, TooltipModel} from 'chart.js/auto';
 import {Router} from '@angular/router';
 import {AccessibilityChart} from '../../accessibility/accessibility-chart.interface';
 import {ChartColors} from "../../styles/colors-chart.style";
 import {getCountriesName} from "../../../core/utils/olympic.utils";
 import {MedalsChartDatas} from "./interfaces/medals-chart-datas.interface";
 import {BreakpointService} from "../../responsive/breakpoint.service";
+import {CountryData} from "./interfaces/country-data.interface";
 
 
 
@@ -34,13 +35,13 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
 
   private tooltipEl?: HTMLDivElement;
 
-  private breakpointService = inject(BreakpointService)
+  private breakpointService: BreakpointService = inject(BreakpointService)
 
   readonly datas: InputSignal<MedalsChartDatas> = input.required<MedalsChartDatas>();
 
   readonly activeIndex: WritableSignal<number | null> = signal(null);
 
-  readonly ariaLabel: Signal<string> = computed(() => {
+  readonly ariaLabel: Signal<string> = computed((): string => {
     const index = this.activeIndex();
     if (index === null) {
       return 'Graphique du nombre de médailles par pays. Utilisez les flèches pour parcourir les pays.';
@@ -61,8 +62,8 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
   }
 
   onKeydown(event: KeyboardEvent): void {
-    const countries = this.datas().countries;
-    const current = this.activeIndex();
+    const countries: CountryData[] = this.datas().countries;
+    const current: number | null = this.activeIndex();
     switch (event.key) {
       case 'ArrowRight':
       case 'ArrowDown':
@@ -103,9 +104,9 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
   }
 
   onClickCountry(): void {
-    const activeElements = this.medalsChart.getActiveElements();
+    const activeElements: ActiveElement[] = this.medalsChart.getActiveElements();
     if (activeElements.length > 0) {
-      const country = this.datas().countries[activeElements[0].index];
+      const country: CountryData = this.datas().countries[activeElements[0].index];
       this.navigateToCountry(country.id)
     }
   }
@@ -114,7 +115,7 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
     this.router.navigateByUrl(`/country/${id}`)
   }
 
-  private buildChart(datas: MedalsChartDatas) {
+  private buildChart(datas: MedalsChartDatas): void {
     this.medalsChart = new Chart("MedalsChart", {
       type: 'bar',
       data: {
@@ -134,7 +135,7 @@ export class MedalsChartComponent implements OnInit, OnDestroy, AccessibilityCha
         plugins: {
           tooltip: {
             enabled: false,
-            external: context => this.renderTooltip(context)
+            external: this.renderTooltip
           }
         }
       }
