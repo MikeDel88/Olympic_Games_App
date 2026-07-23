@@ -38,10 +38,10 @@ export class HomeComponent implements OnInit {
     this.dataService.getOlympics()
       .subscribe({
         next: data => {
-          if (data)
+          if (data.length > 0)
             this.updateUi(data)
           else
-            this.router.navigateByUrl("/not-found")
+            this.error = "Aucune données n'a été trouvée."
         },
         error: (error: Error) => this.error = error.message
       })
