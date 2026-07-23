@@ -1,4 +1,13 @@
 <div class="chart-container">
-  <canvas id="CountryChart">{{ countryChart }}</canvas>
+  <canvas
+    id="CountryChart"
+    tabindex="0"
+    role="button"
+    [attr.aria-label]="ariaLabel()"
+    (keydown)="onKeydown($event)"
+    (blur)="onClearActiveSlice()"
+  >
+    {{ countryChart }}
+  </canvas>
 </div>
 
