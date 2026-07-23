@@ -1,6 +1,5 @@
-import {Component, OnInit, inject, DestroyRef } from '@angular/core';
+import {Component, OnInit, inject } from '@angular/core';
 import {HeaderComponent} from "../../shared/components/header/header.component";
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {MedalsChartComponent} from "../../shared/components/medals-chart/medals-chart.component";
 import {DataService} from "../../core/services/data.service";
 import {Olympics} from "../../models/olympic/olympic.model";
@@ -28,7 +27,6 @@ export class HomeComponent implements OnInit {
   totalJOs!: number;
   medalsChartDatas!: MedalsChartDatas;
 
-  private destroyRef = inject(DestroyRef);
   private dataService= inject(DataService)
   private readonly router = inject(Router)
 
@@ -38,7 +36,6 @@ export class HomeComponent implements OnInit {
 
   private getDatas(): void {
     this.dataService.getOlympics()
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           if (data)

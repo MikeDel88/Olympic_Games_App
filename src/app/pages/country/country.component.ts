@@ -1,6 +1,5 @@
-import {Component, OnInit, inject, DestroyRef } from '@angular/core';
+import {Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {HeaderComponent} from "../../shared/components/header/header.component";
 import {CountryChartComponent} from "../../shared/components/country-chart/country-chart.component";
 import {DataService} from "../../core/services/data.service";
@@ -39,7 +38,6 @@ export class CountryComponent implements OnInit {
   totalMedals!: number
   totalAthletes!: number
 
-  private destroyRef = inject(DestroyRef);
   private dataService= inject(DataService)
   private route = inject(ActivatedRoute)
   private router = inject(Router)
@@ -58,7 +56,6 @@ export class CountryComponent implements OnInit {
 
   private getDatas() {
     this.dataService.getOlympic(this.countryId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: data => {
           if (data)
