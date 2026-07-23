@@ -55,6 +55,20 @@ Lance ESLint (`angular-eslint`, configuration dans `eslint.config.js`).
 
 Pour le détail complet de l'arborescence et des règles de dépendance entre couches, voir [ARCHITECTURE.md](./ARCHITECTURE.md).
 
+## Aperçu
+
+### Page d'accueil — totaux de médailles par pays
+
+| Desktop | Mobile |
+|---|---|
+| ![Page d'accueil - desktop](src/home_desktop.png) | ![Page d'accueil - mobile](src/home_mobile.png) |
+
+### Page de détail pays — médailles par édition
+
+| Desktop | Mobile |
+|---|---|
+| ![Page pays - desktop](src/country_desktop.png) | ![Page pays - mobile](src/country_mobile.png) |
+
 ## Décisions techniques
 
 - **Architecture en couches Core / Shared / Pages / Models**, avec un flux de dépendance à sens unique (pages → services → apis, jamais l'inverse) : facilite les tests et la maintenance, et prépare le branchement d'un vrai back-end sans toucher aux composants.
