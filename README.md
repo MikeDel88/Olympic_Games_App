@@ -1,6 +1,6 @@
 # Olympic Games Starter
 
-Application Angular 18 affichant les statistiques olympiques : page d'accueil avec un camembert des médailles par pays, et page de détail par pays avec une courbe des médailles par édition des JO.
+Application Angular 18 affichant les statistiques olympiques : page d'accueil avec un graphique en barre des médailles par pays, et page de détail par pays avec une courbe des médailles par édition des JO.
 
 ## Prérequis
 
