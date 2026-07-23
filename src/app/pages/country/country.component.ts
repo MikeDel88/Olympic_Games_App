@@ -11,7 +11,7 @@ import {
 } from "../../core/utils/olympic.utils";
 import {Olympic} from "../../models/olympic/olympic.model";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
-import {CountryChartDatas} from "../../shared/components/country-chart/interfaces/country-chart-datas.interfaces";
+import {CountryChartDatas} from "../../shared/components/country-chart/interfaces/country-chart-datas.interface";
 
 
 @Component({

@@ -1,7 +1,7 @@
 import {Component, computed, inject, input, InputSignal, OnInit, signal, Signal, WritableSignal} from '@angular/core';
 import Chart from 'chart.js/auto';
 import {ChartColors} from "../../styles/colors-chart.style";
-import {CountryChartDatas} from "./interfaces/country-chart-datas.interfaces";
+import {CountryChartDatas} from "./interfaces/country-chart-datas.interface";
 import {BreakpointService} from "../../responsive/breakpoint.service";
 import {AccessibilityChart} from "../../accessibility/accessibility-chart.interface";
 

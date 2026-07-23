@@ -11,7 +11,7 @@ export class HeaderInfosComponent {
     infos: InputSignal<HeaderInfos> = input.required<HeaderInfos>();
 }
 
-export type HeaderInfos = {
+export interface HeaderInfos {
   label: string,
   count: number
 }

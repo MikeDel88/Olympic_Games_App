@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import {Observable, tap} from 'rxjs';
 import {OlympicApi} from "../apis/olympic-api.api";
 import {Olympic, Olympics} from "../../models/olympic/olympic.model";
-import {getTotalMedals, sortByLeaders} from "../utils/olympic.utils";
+import {sortByLeaders} from "../utils/olympic.utils";
 
 @Injectable({
   providedIn: 'root'

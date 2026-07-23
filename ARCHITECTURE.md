@@ -66,7 +66,7 @@ src/
     │   │   │   └── medals-chart.component.scss
     │   │   └── country-chart/
     │   │       ├── interfaces/
-    │   │       │   └── country-chart-datas.interfaces.ts
+    │   │       │   └── country-chart-datas.interface.ts
     │   │       ├── country-chart.component.ts
     │   │       ├── country-chart.component.html
     │   │       └── country-chart.component.scss

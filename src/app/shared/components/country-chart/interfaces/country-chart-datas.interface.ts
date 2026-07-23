@@ -1,4 +1,4 @@
-export type CountryChartDatas = {
+export interface CountryChartDatas {
   years: number[]
   medals: string[]
 }
